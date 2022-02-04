@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from "react"
+import { useDropzone } from "react-dropzone"
 import CrosswordGrid, { CrosswordData } from "./CrosswordGrid"
 
 const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
@@ -6,7 +7,6 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
   const [number, setNumber] = useState(1)
   const [acrossOrDown, setAcrossOrDown] = useState<"across" | "down">("across")
   const [answer, setAnswer] = useState("")
-
   const addAcross = () => {
     const newAnswers = [...answers]
     const index = crossword.gridnums.findIndex((num) => num === number)
@@ -29,7 +29,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
 
   return (
     <Fragment>
-      <div className="w-full h-full flex justify-center">
+      <div id="crossword-grid" className="w-full h-full flex justify-center">
         <CrosswordGrid crossword={crossword} answers={answers} />
       </div>
       <form
