@@ -1,5 +1,4 @@
-import React, { useState, Fragment } from "react"
-import { useDropzone } from "react-dropzone"
+import React, { Fragment, useState } from "react"
 import CrosswordGrid, { CrosswordData } from "./CrosswordGrid"
 
 const Crossword = ({ crossword }: { crossword: CrosswordData }) => {

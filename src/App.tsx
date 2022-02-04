@@ -10,14 +10,6 @@ function App() {
     maxFiles: 1,
   })
 
-  const files = acceptedFiles.map((file: any) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ))
-
-  console.log(acceptedFiles)
-
   useEffect(() => {
     if (!acceptedFiles.length) return
     ;(async () => {
