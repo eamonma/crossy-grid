@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react"
+import React, { Fragment, useEffect, useState } from "react"
 import CrosswordGrid, { CrosswordData } from "./CrosswordGrid"
 
 const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
@@ -6,7 +6,10 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
   const [number, setNumber] = useState(1)
   const [acrossOrDown, setAcrossOrDown] = useState<"across" | "down">("across")
   const [answer, setAnswer] = useState("")
-  const [updatedAnswers, setUpdatedAnswers] = useState<Array<number>>([])
+  const [highlights, setHighlights] = useState<Array<boolean>>([])
+  const [highlightsInput, setHighlightsInput] = useState<string>("")
+  const [highlightColour, sethighlightColour] = useState<string>("")
+  const [inputAnswers, setInputAnswers] = useState("")
 
   const addAcross = () => {
     const newAnswers = [...answers]
@@ -17,7 +20,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
       newAnswers[index + i] = letter
       newUpdatedAnswers[index + i] = 1
     })
-    setUpdatedAnswers(newUpdatedAnswers)
+    // setUpdatedAnswers(newUpdatedAnswers)
     setAnswers(newAnswers)
   }
 
@@ -30,21 +33,32 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
       newAnswers[index + i * crossword.size.cols] = letter
       newUpdatedAnswers[index + i * crossword.size.cols] = 1
     })
-    setUpdatedAnswers(newUpdatedAnswers)
+    // setUpdatedAnswers(newUpdatedAnswers)
     setAnswers(newAnswers)
   }
 
+  useEffect(() => {
+    setInputAnswers(JSON.stringify(answers))
+  }, [answers])
+
+  useEffect(() => {
+    setHighlightsInput(JSON.stringify(highlights))
+  }, [highlights])
+
   return (
     <Fragment>
-      <div className="w-full h-full flex justify-center">
+      <div className="flex justify-center w-full h-full">
         <CrosswordGrid
           crossword={crossword}
           answers={answers}
-          newAnswers={updatedAnswers}
+          highlight={highlights}
+          highlightColour={highlightColour}
+          // newAnswers={updatedAnswers}
         />
       </div>
+
       <form
-        className="p-4 flex flex-wrap w-full justify-center items-center gap-4"
+        className="flex flex-wrap items-center justify-center w-full gap-4 p-4"
         onSubmit={(e) => {
           e.preventDefault()
           setAnswer("")
@@ -55,10 +69,10 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
       >
         <div className="flex align-center">
           <label className="relative flex items-center">
-            <span className="text-xl mr-2">Number</span>
+            <span className="mr-2 text-xl">Number</span>
             <input
               id="number"
-              className="rounded-xl p-2 px-3 w-22 max-w-full border-2 rounded-r-none z-10"
+              className="z-10 max-w-full p-2 px-3 border-2 rounded-r-none rounded-xl w-22"
               type="number"
               value={number}
               onChange={(e) => setNumber(parseInt(e.target.value))}
@@ -68,7 +82,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
           <select
             name=""
             id="direction"
-            className="p-3 rounded-xl rounded-l-none"
+            className="p-3 rounded-l-none rounded-xl"
             value={acrossOrDown}
             tabIndex={0}
             onChange={(e) =>
@@ -80,17 +94,138 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
           </select>
         </div>
         <label className="flex items-center">
-          <span className="text-xl mr-2">Answer</span>
+          <span className="mr-2 text-xl">Answer</span>
           <input
             id="answer"
-            className="rounded-xl p-2 px-3 w-22 border-2 font-medium"
+            className="p-2 px-3 font-medium border-2 rounded-xl w-22"
             type="text"
             value={answer}
             onChange={(e) => setAnswer(e.target.value.toUpperCase())}
           />
         </label>
-        <button className="rounded-xl bg-zinc-200 p-2 px-4 my-2 font-medium hover:bg-zinc-100 transition">
+        <button
+          id="add-answer"
+          className="p-2 px-4 my-2 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+        >
           Add answer
+        </button>
+      </form>
+      <form
+        className="p-4"
+        onSubmit={(e) => {
+          e.preventDefault()
+
+          setAnswers(JSON.parse(inputAnswers))
+          setInputAnswers("")
+        }}
+      >
+        {/* <label className="flex flex-col gap-2">
+          <span className="text-2xl">All answers</span>
+          <textarea
+            id="all-answers"
+            readOnly
+            className="z-10 p-3 mb-4 font-mono border-2 rounded-xl w-22 min-h-[100px]"
+            value={JSON.stringify(answers)}
+          />
+        </label> */}
+        <label className="flex flex-col gap-2">
+          <span className="text-2xl">Set answers</span>
+          <textarea
+            id="all-answer-input"
+            placeholder="['a', '', 'n', ...]"
+            className="z-10 p-3 font-mono border-2 rounded-xl w-22 min-h-[100px]"
+            onChange={(e) => setInputAnswers(e.target.value)}
+            value={inputAnswers}
+          />
+        </label>
+        <button
+          id="set-answers"
+          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          type="submit"
+        >
+          Set answers
+        </button>
+      </form>
+
+      <form
+        className="p-4"
+        onSubmit={(e) => {
+          e.preventDefault()
+
+          setHighlights(JSON.parse(highlightsInput))
+          setHighlightsInput("")
+        }}
+      >
+        {/* <label className="flex flex-col gap-2">
+          <span className="text-2xl">All answers</span>
+          <textarea
+            id="all-answers"
+            readOnly
+            className="z-10 p-3 mb-4 font-mono border-2 rounded-xl w-22 min-h-[100px]"
+            value={JSON.stringify(answers)}
+          />
+        </label  <label className="flex flex-col gap-2">
+          <span className="text-2xl">Set highlights colour</span>
+          <input
+            type="text"
+            id="highlights-colour"
+            placeholder="#fff"
+            className="z-10 p-3 font-mono border-2 rounded-xl w-22 "
+            onChange={(e) => sethighlightColour(e.target.value)}
+            value={highlightColour}
+          />
+        </label>bel> */}
+
+        <label className="flex flex-col gap-2">
+          <span className="text-2xl">Set highlights colour</span>
+          <input
+            type="text"
+            id="highlights-colour"
+            placeholder="#fff"
+            className="z-10 p-3 font-mono border-2 rounded-xl w-22 "
+            onChange={(e) => sethighlightColour(e.target.value)}
+            value={highlightColour}
+          />
+        </label>
+        <button
+          id="reset-highlights-colour"
+          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          type="submit"
+          onClick={(e) => {
+            e.preventDefault()
+
+            sethighlightColour("#fff")
+          }}
+        >
+          Reset highlights colour to white
+        </button>
+        <label className="flex flex-col gap-2 mt-4">
+          <span className="text-2xl">Set highlights</span>
+          <textarea
+            id="highlights-input"
+            placeholder="['true', '', 'false', ...]"
+            className="z-10 p-3 font-mono border-2 rounded-xl w-22 min-h-[100px]"
+            onChange={(e) => setHighlightsInput(e.target.value)}
+            value={highlightsInput}
+          />
+        </label>
+        <button
+          id="clear-highlights"
+          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          onClick={(e) => {
+            e.preventDefault()
+
+            setHighlights([])
+          }}
+        >
+          Clear highlights
+        </button>
+        <button
+          id="set-highlights"
+          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          type="submit"
+        >
+          Set highlights
         </button>
       </form>
     </Fragment>

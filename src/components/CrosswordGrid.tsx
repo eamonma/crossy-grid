@@ -28,11 +28,13 @@ export interface CrosswordData {
 const CrosswordGrid = ({
   crossword,
   answers,
-  newAnswers,
+  highlight = [],
+  highlightColour = "rgb(254 240 138)",
 }: {
   crossword: CrosswordData
   answers: Array<string>
-  newAnswers: Array<number>
+  highlight?: Array<boolean>
+  highlightColour?: string
 }) => {
   return (
     <div id="crossword-grid" className="m-4">
@@ -45,18 +47,21 @@ const CrosswordGrid = ({
       >
         {[...new Array(crossword.size.cols * crossword.size.rows)].map(
           (_, i) => {
+            let backgroundColour = "#fff"
+            if (crossword.grid[i] === ".") backgroundColour = "rgb(24 24 27)"
+            else if (highlight[i]) backgroundColour = highlightColour
             return (
               <div
-                className={`border-[0.8px] text-zinc-800 border-gray-400 relative w-full h-full items-center flex font-normal text-3xl  ${
-                  crossword.grid[i] === "."
-                    ? "bg-zinc-900"
-                    : newAnswers[i] === 1 && "bg-yellow-200"
-                }`}
+                key={i}
+                className={`relative flex items-center w-full h-full text-3xl font-normal border-gray-400 border-[0.8px] text-zinc-800 `}
+                style={{
+                  backgroundColor: backgroundColour,
+                }}
               >
-                <div className="text-[11px] leading-[11px] tracking-tighter m-0 p-0 absolute top-[1.4px] left-[2px] font-semibold">
+                <div className="absolute p-0 m-0 font-semibold tracking-tighter text-[11px] leading-[11px] top-[1.4px] left-[2px]">
                   {!!crossword.gridnums[i] && crossword.gridnums[i]}
                 </div>
-                <div className="w-full h-full flex relative top-1 justify-center items-center">
+                <div className="relative flex items-center justify-center w-full h-full top-1">
                   {answers[i] && crossword.grid[i] !== "." && answers[i]}
                 </div>
               </div>
