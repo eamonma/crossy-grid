@@ -6,9 +6,10 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
   const [number, setNumber] = useState(1)
   const [acrossOrDown, setAcrossOrDown] = useState<"across" | "down">("across")
   const [answer, setAnswer] = useState("")
-  const [highlights, setHighlights] = useState<Array<boolean>>([])
+  const [highlights, setHighlights] = useState<{ [gridNum: number]: string }>(
+    {}
+  )
   const [highlightsInput, setHighlightsInput] = useState<string>("")
-  const [highlightColour, sethighlightColour] = useState<string>("")
   const [inputAnswers, setInputAnswers] = useState("")
 
   const addAcross = () => {
@@ -51,8 +52,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
         <CrosswordGrid
           crossword={crossword}
           answers={answers}
-          highlight={highlights}
-          highlightColour={highlightColour}
+          highlights={highlights}
           // newAnswers={updatedAnswers}
         />
       </div>
@@ -82,7 +82,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
           <select
             name=""
             id="direction"
-            className="p-3 rounded-l-none rounded-xl"
+            className="p-3 rounded-l-none rounded-xl bg-zinc-200"
             value={acrossOrDown}
             tabIndex={0}
             onChange={(e) =>
@@ -176,7 +176,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
           />
         </label>bel> */}
 
-        <label className="flex flex-col gap-2">
+        {/* <label className="flex flex-col gap-2">
           <span className="text-2xl">Set highlights colour</span>
           <input
             type="text"
@@ -198,12 +198,12 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
           }}
         >
           Reset highlights colour to white
-        </button>
+        </button> */}
         <label className="flex flex-col gap-2 mt-4">
           <span className="text-2xl">Set highlights</span>
           <textarea
             id="highlights-input"
-            placeholder="['true', '', 'false', ...]"
+            placeholder={'{"12": "#f00f0"}'}
             className="z-10 p-3 font-mono border-2 rounded-xl w-22 min-h-[100px]"
             onChange={(e) => setHighlightsInput(e.target.value)}
             value={highlightsInput}
@@ -215,7 +215,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
           onClick={(e) => {
             e.preventDefault()
 
-            setHighlights([])
+            setHighlights({})
           }}
         >
           Clear highlights

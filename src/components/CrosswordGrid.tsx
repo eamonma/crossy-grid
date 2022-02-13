@@ -28,12 +28,11 @@ export interface CrosswordData {
 const CrosswordGrid = ({
   crossword,
   answers,
-  highlight = [],
-  highlightColour = "rgb(254 240 138)",
+  highlights = [],
 }: {
   crossword: CrosswordData
   answers: Array<string>
-  highlight?: Array<boolean>
+  highlights?: { [gridNum: number]: string }
   highlightColour?: string
 }) => {
   return (
@@ -49,7 +48,8 @@ const CrosswordGrid = ({
           (_, i) => {
             let backgroundColour = "#fff"
             if (crossword.grid[i] === ".") backgroundColour = "rgb(24 24 27)"
-            else if (highlight[i]) backgroundColour = highlightColour
+            else if (Object.keys(highlights).includes(i.toString()))
+              backgroundColour = highlights[i]
             return (
               <div
                 key={i}
