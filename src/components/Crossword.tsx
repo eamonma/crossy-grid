@@ -3,9 +3,11 @@ import CrosswordGrid, { CrosswordData } from "./CrosswordGrid"
 
 const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
   const [answers, setAnswers] = useState<Array<string>>([])
-  const [number, setNumber] = useState(1)
+  const [gridNum, setGridNum] = useState(1)
+  const [nthAnswer, setNthAnswer] = useState(0)
   const [acrossOrDown, setAcrossOrDown] = useState<"across" | "down">("across")
   const [answer, setAnswer] = useState("")
+  const [letter, setLetter] = useState("")
   const [highlights, setHighlights] = useState<{ [gridNum: number]: string }>(
     {}
   )
@@ -14,7 +16,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
 
   const addAcross = () => {
     const newAnswers = [...answers]
-    const index = crossword.gridnums.findIndex((num) => num === number)
+    const index = crossword.gridnums.findIndex((num) => num === gridNum)
 
     const newUpdatedAnswers: Array<number> = []
     Array.from(answer).forEach((letter, i) => {
@@ -27,7 +29,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
 
   const addDown = () => {
     const newAnswers = [...answers]
-    const index = crossword.gridnums.findIndex((num) => num === number)
+    const index = crossword.gridnums.findIndex((num) => num === gridNum)
 
     const newUpdatedAnswers: Array<number> = []
     Array.from(answer).forEach((letter, i) => {
@@ -37,6 +39,10 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
     // setUpdatedAnswers(newUpdatedAnswers)
     setAnswers(newAnswers)
   }
+
+  useEffect(() => {
+    setAnswers(new Array(crossword.size.rows * crossword.size.cols).fill(""))
+  }, [crossword])
 
   useEffect(() => {
     setInputAnswers(JSON.stringify(answers))
@@ -61,8 +67,60 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
         className="flex flex-wrap items-center justify-center w-full gap-4 p-4"
         onSubmit={(e) => {
           e.preventDefault()
+
+          console.log(letter, nthAnswer)
+
+          setAnswers((prevAnswers) => {
+            const r = prevAnswers.map((prevAnswer, i) => {
+              if (i === nthAnswer) return letter
+              return prevAnswer
+            })
+            console.log(r)
+
+            return r
+          })
+          setLetter("")
+          setNthAnswer(0)
+          // if (acrossOrDown === "across") addAcross()
+          // if (acrossOrDown === "down") addDown()
+        }}
+      >
+        <div className="flex align-center">
+          <label className="relative flex items-center">
+            <span className="mr-2 text-xl">Number</span>
+            <input
+              id="nthAnswer"
+              className="z-10 max-w-full p-2 px-3 border-2 rounded-xl w-22"
+              type="number"
+              value={nthAnswer}
+              onChange={(e) => setNthAnswer(parseInt(e.target.value))}
+            />
+          </label>
+        </div>
+        <label className="flex items-center">
+          <span className="mr-2 text-xl">Letter</span>
+          <input
+            id="letter"
+            className="p-2 px-3 font-medium border-2 rounded-xl w-22"
+            type="text"
+            value={letter}
+            onChange={(e) => setLetter(e.target.value.toUpperCase())}
+          />
+        </label>
+        <button
+          id="set-letter"
+          className="p-2 px-4 my-2 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+        >
+          Set letter
+        </button>
+      </form>
+
+      <form
+        className="flex flex-wrap items-center justify-center w-full gap-4 p-4"
+        onSubmit={(e) => {
+          e.preventDefault()
           setAnswer("")
-          setNumber(1)
+          setGridNum(1)
           if (acrossOrDown === "across") addAcross()
           if (acrossOrDown === "down") addDown()
         }}
@@ -74,8 +132,8 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
               id="number"
               className="z-10 max-w-full p-2 px-3 border-2 rounded-r-none rounded-xl w-22"
               type="number"
-              value={number}
-              onChange={(e) => setNumber(parseInt(e.target.value))}
+              value={gridNum}
+              onChange={(e) => setGridNum(parseInt(e.target.value))}
             />
           </label>
 
