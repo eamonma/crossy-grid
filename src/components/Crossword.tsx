@@ -109,7 +109,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
         </label>
         <button
           id="set-letter"
-          className="p-2 px-4 my-2 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          className="p-2 px-4 my-2 font-medium transition rounded-xl border hover:bg-zinc-400/20"
         >
           Set letter
         </button>
@@ -140,7 +140,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
           <select
             name=""
             id="direction"
-            className="p-3 rounded-l-none rounded-xl bg-zinc-200"
+            className="p-2 rounded-l-none rounded-xl border"
             value={acrossOrDown}
             tabIndex={0}
             onChange={(e) =>
@@ -163,7 +163,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
         </label>
         <button
           id="add-answer"
-          className="p-2 px-4 my-2 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          className="p-2 px-4 my-2 font-medium transition rounded-xl border hover:bg-zinc-400/20"
         >
           Add answer
         </button>
@@ -198,7 +198,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
         </label>
         <button
           id="set-answers"
-          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl border hover:bg-zinc-400/20"
           type="submit"
         >
           Set answers
@@ -247,7 +247,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
         </label>
         <button
           id="reset-highlights-colour"
-          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl border hover:bg-zinc-400/20"
           type="submit"
           onClick={(e) => {
             e.preventDefault()
@@ -269,7 +269,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
         </label>
         <button
           id="clear-highlights"
-          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl border hover:bg-zinc-400/20"
           onClick={(e) => {
             e.preventDefault()
 
@@ -280,7 +280,7 @@ const Crossword = ({ crossword }: { crossword: CrosswordData }) => {
         </button>
         <button
           id="set-highlights"
-          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl bg-zinc-200 hover:bg-zinc-100"
+          className="p-2 px-4 m-4 ml-0 font-medium transition rounded-xl border hover:bg-zinc-400/20"
           type="submit"
         >
           Set highlights

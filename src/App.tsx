@@ -15,7 +15,6 @@ function App() {
     if (!acceptedFiles.length) return
     ;(async () => {
       const reader = new FileReader()
-      console.log(acceptedFiles[0])
       reader.readAsText(acceptedFiles[0])
 
       reader.onload = (result) => {
@@ -53,20 +52,20 @@ function App() {
         </label>
         <div className="mt-4">
           <button
-            className="rounded-xl bg-zinc-200 p-2 px-4 font-medium hover:bg-zinc-100 transition"
+            className="rounded-xl border p-2 px-4 font-medium hover:border transition"
             id="input-json-button"
             type="submit"
           >
             Input JSON
           </button>
           <button
-            className="rounded-xl bg-zinc-200 p-2 px-4 font-medium hover:bg-zinc-100 transition mx-4"
+            className="rounded-xl border p-2 px-4 font-medium hover:border transition mx-4"
             onClick={() => setInputCrossword("")}
           >
             Clear
           </button>
           <button
-            className="rounded-xl bg-zinc-200 p-2 px-4 font-medium hover:bg-zinc-100 transition mx-4 ml-0"
+            className="rounded-xl border p-2 px-4 font-medium hover:border transition mx-4 ml-0"
             onClick={() =>
               setInputCrossword(
                 JSON.stringify(JSON.parse(inputCrossword), undefined, 2)

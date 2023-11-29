@@ -53,7 +53,7 @@ const CrosswordGrid = ({
             return (
               <div
                 key={i}
-                className={`relative flex items-center w-full h-full text-3xl font-normal border-gray-400 border-opacity-70 border-[0.4px] text-zinc-800`}
+                className={`relative flex items-center w-full h-full text-3xl font-normal border-neutral-400 border-opacity-60 border-[0.4px] text-zinc-800`}
                 style={{
                   backgroundColor: backgroundColour,
                 }}
